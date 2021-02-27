@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./nprogress-jc/nprogress.css">
+    <style>
+        a {
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: none;
+        }
+        
+        .logo {
+            width: 124px;
+            height: 31px;
+            vertical-align: middle;
+        }
+        
+        .hetou {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            line-height: 80px;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+        }
+        
+        .tonpp {
+            color: #000;
+            font-weight: 700;
+            padding: 0 10px;
+        }
+        
+        .tonpp:hover {
+            color: #ccc;
+        }
+        
+        .fdj {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 18px;
+            color: #000;
+            cursor: pointer;
+        }
+        
+        .zdafn {
+            margin-top: 80px;
+            height: 220px;
+            background-color: #fc6760;
+        }
+        
+        .dati {
+            padding-top: 30px;
+        }
+        
+        .lyd {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="youdao">
+        <div class="container-fluid hetou">
+            <div class="container  hetou">
+                <img src="./img/logo-extra.png" alt="" class="logo">
+                <span><a href="/qiantaiyemian/HomePage.html" class="tonpp">首页</a></span>
+                <span><a href="" class="tonpp">关于有道</a></span>
+                <div class="fdj">
+                    <i class="glyphicon glyphicon-search"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="zdafn">
+            <div class="container dati">
+                <h2 id="shijian"></h2>
+                <h1 id="mincheng"></h1>
+            </div>
+        </div>
+        <div class="container">
+            <h3>文章详情:</h3>
+        </div>
+        <div class="container lyd" id="neirong">
+
+        </div>
+    </div>
+</body>
+<script src="./js/jquery.js"></script>
+<script src="./bootstrap/js/bootstrap.js"></script>
+<script src="./js/axios.js"></script>
+<script src="./js/layer/layer.js"></script>
+<script src="./nprogress-jc/nprogress.js"></script>
+<script src="./utils/request.js"></script>
+<script src="./time工具/timegonju.js"></script>
+<script>
+    function nadaoiddshuju() {
+        let url = location.href;
+        // 拿到传过来的id
+        function searchParam(url) {
+            let search = location.search.slice(1) || '';
+            let params = {};
+            search && search.split('&').forEach(v => {
+                let [key, value] = v.split('=')
+                params[key] = decodeURIComponent(value)
+            })
+            return params;
+        }
+        let {
+            id
+        } = searchParam(url);
+        async function fasonqq() {
+            let data = await axios.get(`/xiangqing?id=${id}`);
+            let {
+                Launchtime,
+                content,
+                title
+            } = data[0];
+            Launchtime = moment(Launchtime).format('YYYY-MM-DD')
+            $('#shijian').html(Launchtime);
+            $('#mincheng').html('《' + title + '》');
+            $('#neirong').html(content);
+        };
+        fasonqq();
+    }
+    nadaoiddshuju();
+</script>
+
+</html>

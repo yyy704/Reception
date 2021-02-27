@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./nprogress-jc/nprogress.css">
+    <style>
+        a {
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: none;
+        }
+        
+        .logo {
+            width: 124px;
+            height: 31px;
+            vertical-align: middle;
+        }
+        
+        .hetou {
+            position: relative;
+            height: 80px;
+            line-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tonpp {
+            color: #fff;
+            font-weight: 700;
+            padding: 0 10px;
+        }
+        
+        .tonpp:hover {
+            color: #ccc;
+        }
+        
+        .fdj {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 18px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .youdao {
+            background: url('./img/有道.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            height: 420px;
+        }
+        
+        .lydd {
+            padding-top: 20px;
+        }
+        
+        .wzdabiao {
+            display: flex;
+            align-items: center;
+        }
+        
+        .wztu {
+            width: 300px;
+        }
+        
+        .liudf {
+            margin-left: 20px;
+            width: 400px;
+        }
+        
+        .shuipinxian {
+            width: 100%;
+            border-bottom: 1px solid #fff;
+            margin-top: 40px;
+        }
+        
+        .xiankuan {
+            width: 550px;
+        }
+        
+        .xiangqing {
+            width: 100px;
+            height: 40px;
+            border: 1px solid #000;
+            border-radius: 20px;
+            text-align: center;
+            line-height: 40px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+        
+        .dropdown-menu {
+            top: 70%;
+        }
+        
+        .btn-default {
+            background-color: #000;
+            color: #fff;
+            border: 0;
+        }
+        
+        .btn-default:hover {
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .xq {
+            color: #000;
+        }
+        
+        .xq:hover {
+            text-decoration: none;
+            color: #000;
+        }
+        
+        .ckgd {
+            border: 1px solid #000;
+            height: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=" youdao">
+        <div class="container lydd">
+            <div class="hetou row">
+                <img src="./img/logo.png" alt="" class="logo">
+                <span><a href="" class="tonpp">首页</a></span>
+                <span><a href="" class="tonpp">关于有道</a></span>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        分类
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu4" id="flei">
+
+
+                    </ul>
+                </div>
+                <div class="fdj">
+                    <i class="glyphicon glyphicon-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1 style="font-weight: 700;">最新文章</h1>
+    </div>
+    <div class="container" id="dakouz">
+
+    </div>
+    <div class="container ckgd" id="ckgd">查看更多</div>
+
+</body>
+<script src="./js/jquery.js"></script>
+<script src="./bootstrap/js/bootstrap.js"></script>
+<script src="./js/axios.js"></script>
+<script src="./js/layer/layer.js"></script>
+<script src="./nprogress-jc/nprogress.js"></script>
+<script src="./utils/request.js"></script>
+<script src="./time工具/timegonju.js"></script>
+<!-- <script src="./progress/progress.js"></script> -->
+<script>
+    // 改变点击分类的初始化样式
+    $('.btn-default').on('click', function() {
+        $(this).css({
+            'background-color': '#000',
+            'color': '#fff',
+            'border': 0
+        })
+    })
+
+    let yehsu = 1;
+    let tiaohsu = 3;
+    async function huoqsju() {
+        let data = await axios.get(`/posttt?yehsu=${yehsu}&tiaohsu=${tiaohsu}`);
+        // 判断是否还有文章数据
+        if (!data.length) {
+            layer.msg('我已经到底了');
+            return;
+        }
+        let dddiv = ``;
+        data.map(v => {
+            let {
+                Launchtime,
+                cover,
+                id,
+                title,
+                classification,
+                name
+            } = v;
+            cover = `http://127.0.0.1:3000/` + cover;
+            Launchtime = moment(Launchtime).format('YYYY-MM-DD')
+            dddiv += `<div class="container">
+                            <br>
+                            <div class="wzdabiao">
+                                <div>
+                                    <img src="${cover}" alt="" class="wztu">
+                                </div>
+                                <div class="liudf">
+                                    <p>发布时间：${Launchtime}</p>
+                                    <h2>文章标题：《${title}》</h2>
+                                    <h2>所属分类：${name}</h2>
+                                </div>
+                                <div class="xiangqing">
+                                    <a href="/qiantaiyemian/details.html?id=${id}" class="xq"  id="xq">详情</a>
+                                </div>
+                            </div>
+                            <div class="shuipinxian"></div>
+                        </div>`;
+
+        });
+        // 要和原文章列表标签进行拼接在赋值
+        let oldDivHtml = $('#dakouz').html()
+        let divHtml = oldDivHtml + dddiv
+        $('#dakouz').html(divHtml)
+
+
+    }
+    huoqsju();
+
+    // 点击加载更多数据
+    function ckgd() {
+        $('#ckgd').on('click', function() {
+            yehsu++;
+            huoqsju();
+        })
+    }
+    ckgd();
+
+    // 获取分类数据
+    async function fenleishuju() {
+        let data = await axios.get(`/huoqufenlei`);
+        let fenlei = ``;
+        data.map(v => {
+            let {
+                id,
+                name
+            } = v;
+            fenlei += `<li><a href="/qiantaiyemian/fenlei.html?id=${id}">${name}</a></li>`
+        })
+        $('#flei').html(fenlei);
+    }
+    fenleishuju();
+
+
+    // 进度条
+    function progress() {
+        // 修改默认配置
+        NProgress.configure({
+            showSpinner: false
+        });
+
+        // 页面顶部进度条
+        NProgress.set(0.4)
+            // 设置一个定时器
+        let interval = setInterval(function() {
+            NProgress.inc(); // 以小量递增
+        }, 200)
+
+        // 高版本VisualStudioCode只能用on（'load'）
+        $(window).on('load', () => {
+            clearInterval(interval); // 执行完毕清定时器
+            NProgress.done();
+        })
+    };
+    progress();
+</script>
+
+</html>
